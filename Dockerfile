@@ -17,7 +17,7 @@ RUN mkdir -p /opt/exiftool \
 WORKDIR /app
 
 RUN pip install --upgrade pip wheel \
-&& pip install --no-cache-dir -r requirements.txt \
+&& pip install --no-cache-dir -r requirements.txt
 
 
 FROM gcr.io/distroless/python3:nonroot
