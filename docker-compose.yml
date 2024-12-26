@@ -1,0 +1,8 @@
+services:
+
+  rawbot-bot-01:
+    image: "ghcr.io/cytsai1008/rawbot:main"
+    container_name: "rawbot-bot-01"
+    env_file:
+      - .env
+    restart: always
