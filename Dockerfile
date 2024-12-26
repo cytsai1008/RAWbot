@@ -19,4 +19,5 @@ FROM gcr.io/distroless/python3:nonroot
 COPY --from=build-env /app /app
 COPY --from=build-env /opt/exiftool /opt/exiftool
 WORKDIR /app
+RUN pip install --no-cache-dir -r requirements.txt
 CMD ["main.py"]
