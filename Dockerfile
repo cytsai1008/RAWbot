@@ -20,11 +20,22 @@ RUN pip install --upgrade pip wheel \
 && pip install --no-cache-dir -r requirements.txt
 
 
-FROM al3xos/python-distroless:3.12-debian12:nonroot
+FROM gcr.io/distroless/cc-debian12:nonroot
 COPY --from=build-env /app /app
 COPY --from=build-env /opt/exiftool /opt/exiftool
 COPY --from=build-env /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
 
+ARG PYTHON_VERSION=3.12
+ENV PATH="/usr/local/bin:${PATH}"
+ENV LD_LIBRARY_PATH=/usr/local/lib:/lib/x86_64-linux-gnu:${LD_LIBRARY_PATH:-}
+
+# Copy the Python interpreter with a specific name
+COPY --from=build-env /usr/local/bin/python${PYTHON_VERSION} /usr/local/bin/pythonapp
+# Copy Python library files including shared libraries
+COPY --from=build-env /usr/local/lib/python${PYTHON_VERSION} /usr/local/lib/python${PYTHON_VERSION}
+COPY --from=build-env /usr/local/lib/libpython${PYTHON_VERSION}.so* /usr/local/lib/
+# Copy system libraries for x86_64
+COPY --from=build-env /lib/x86_64-linux-gnu/lib* /lib/x86_64-linux-gnu/
 
 ENV PATH="/opt/exiftool:${PATH}"
 ENV PYTHONPATH="/usr/local/lib/python3.12/site-packages:${PYTHONPATH}"
