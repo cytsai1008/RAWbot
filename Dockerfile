@@ -15,14 +15,20 @@ RUN mkdir -p /opt/exiftool \
 && rm -f $EXIFTOOL_ARCHIVE \
 && /opt/exiftool/exiftool -ver
 
-RUN pip install --no-cache-dir -r requirements.txt
+RUN python -m venv /venv
+RUN /venv/bin/activate \
+&& pip install --upgrade pip \
+&& pip install --no-cache-dir -r requirements.txt \
+&& pip install --no-cache-dir
+
 
 FROM gcr.io/distroless/python3:nonroot
 COPY --from=build-env /app /app
 COPY --from=build-env /opt/exiftool /opt/exiftool
-COPY --from=build-env /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
+COPY --from=build-env /venv /venv
 
 ENV PATH="/opt/exiftool:${PATH}"
+ENV PATH="/venv/bin:${PATH}"
 
 WORKDIR /app
 CMD ["main.py"]
