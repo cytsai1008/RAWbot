@@ -16,10 +16,8 @@ RUN mkdir -p /opt/exiftool \
 
 WORKDIR /app
 
-RUN python -m venv /venv
 RUN pip install --upgrade pip wheel \
 && pip install --no-cache-dir -r requirements.txt \
-&& pip install --no-cache-dir
 
 
 FROM gcr.io/distroless/python3:nonroot
@@ -29,7 +27,6 @@ COPY --from=build-env /usr/local/lib/python3.12/site-packages /usr/local/lib/pyt
 
 
 ENV PATH="/opt/exiftool:${PATH}"
-ENV PATH="/venv/bin:${PATH}"
 ENV PYTHONPATH="/usr/local/lib/python3.12/site-packages:${PYTHONPATH}"
 
 WORKDIR /app
