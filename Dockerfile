@@ -1,4 +1,10 @@
 FROM python:3.12-slim AS build-env
+
+RUN apt-get update && apt-get install -y \
+    curl \
+    sha1sum \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY . /app
 WORKDIR /app
 
@@ -11,7 +17,7 @@ RUN mkdir -p /opt/exiftool \
 && echo "${CHECKSUM}  ${EXIFTOOL_ARCHIVE}" | /usr/bin/sha1sum -c -s - \
 && tar xzf $EXIFTOOL_ARCHIVE --strip-components=1 \
 && rm -f $EXIFTOOL_ARCHIVE \
-&& /opt/exiftool/exiftool -ver
+&& exiftool -ver
 
 FROM gcr.io/distroless/python3:nonroot
 COPY --from=build-env /app /app
