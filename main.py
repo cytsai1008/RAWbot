@@ -72,7 +72,7 @@ async def on_message(message):
                     )
 
             except Exception as e:
-                await message.channel.send(
+                await message.reply(
                     f"Failed to process {attachment.filename}: {e}"
                 )
 
