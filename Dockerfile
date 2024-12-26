@@ -16,7 +16,7 @@ RUN mkdir -p /opt/exiftool \
 && /opt/exiftool/exiftool -ver
 
 RUN python -m venv /venv
-RUN /venv/bin/activate \
+RUN bash /venv/bin/activate \
 && pip install --upgrade pip \
 && pip install --no-cache-dir -r requirements.txt \
 && pip install --no-cache-dir
