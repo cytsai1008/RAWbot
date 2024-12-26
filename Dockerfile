@@ -20,7 +20,7 @@ RUN pip install --upgrade pip wheel \
 && pip install --no-cache-dir -r requirements.txt
 
 
-FROM gcr.io/distroless/python3:nonroot
+FROM al3xos/python-distroless:3.12-debian12:nonroot
 COPY --from=build-env /app /app
 COPY --from=build-env /opt/exiftool /opt/exiftool
 COPY --from=build-env /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
