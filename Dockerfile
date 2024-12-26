@@ -13,7 +13,7 @@ RUN mkdir -p /opt/exiftool \
 && curl -s -O https://exiftool.org/$EXIFTOOL_ARCHIVE \
 && tar xzf $EXIFTOOL_ARCHIVE --strip-components=1 \
 && rm -f $EXIFTOOL_ARCHIVE \
-&& exiftool -ver
+&& /opt/exiftool/exiftool -ver
 
 FROM gcr.io/distroless/python3:nonroot
 COPY --from=build-env /app /app
