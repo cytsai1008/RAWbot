@@ -4,7 +4,6 @@ RUN apt-get update && apt-get install -y \
     curl
 
 COPY . /app
-WORKDIR /app
 
 RUN mkdir -p /opt/exiftool \
 && cd /opt/exiftool \
@@ -15,9 +14,10 @@ RUN mkdir -p /opt/exiftool \
 && rm -f $EXIFTOOL_ARCHIVE \
 && /opt/exiftool/exiftool -ver
 
+WORKDIR /app
+
 RUN python -m venv /venv
-RUN bash /venv/bin/activate \
-&& pip install --upgrade pip \
+RUN pip install --upgrade pip wheel \
 && pip install --no-cache-dir -r requirements.txt \
 && pip install --no-cache-dir
 
@@ -25,10 +25,12 @@ RUN bash /venv/bin/activate \
 FROM gcr.io/distroless/python3:nonroot
 COPY --from=build-env /app /app
 COPY --from=build-env /opt/exiftool /opt/exiftool
-COPY --from=build-env /venv /venv
+COPY --from=build-env /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
+
 
 ENV PATH="/opt/exiftool:${PATH}"
 ENV PATH="/venv/bin:${PATH}"
+ENV PYTHONPATH="/usr/local/lib/python3.12/site-packages:${PYTHONPATH}"
 
 WORKDIR /app
 CMD ["main.py"]
