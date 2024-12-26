@@ -11,7 +11,7 @@ RUN mkdir -p /opt/exiftool \
 && echo "${CHECKSUM}  ${EXIFTOOL_ARCHIVE}" | /usr/bin/sha1sum -c -s - \
 && tar xzf $EXIFTOOL_ARCHIVE --strip-components=1 \
 && rm -f $EXIFTOOL_ARCHIVE \
-&& exiftool -ver
+&& /opt/exiftool/exiftool -ver
 
 FROM gcr.io/distroless/python3:nonroot
 COPY --from=build-env /app /app
