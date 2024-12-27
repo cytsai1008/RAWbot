@@ -28,8 +28,10 @@ async def run_exiftool(byte_data):
         temp_file.write(byte_data)
         temp_file_path = temp_file.name
 
+        exif_path = os.environ.get("EXIFTOOL_PATH", "/opt/exiftool/")
+
         proc = await asyncio.create_subprocess_exec(
-            "exiftool",
+            os.path.join(exif_path, "exiftool"),
             "-s",
             "-T",
             "-FileType",
