@@ -26,14 +26,13 @@ COPY --from=build-env /opt/exiftool /opt/exiftool
 COPY --from=build-env /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
 
 ENV LD_LIBRARY_PATH=/usr/local/lib:/lib/x86_64-linux-gnu:${LD_LIBRARY_PATH:-}
-ARG PYTHON_VERSION=3.12
-ENV PYTHONPATH=/usr/local/lib/python${PYTHON_VERSION}/site-packages
+ENV PYTHONPATH=/usr/local/lib/python3.12/site-packages
 ENV PATH="/usr/local/bin:${PATH}"
 
-COPY --from=build-env /usr/local/bin/python${PYTHON_VERSION} /usr/local/bin/pythonapp
+COPY --from=build-env /usr/local/bin/python3.12 /usr/local/bin/python3
 # Copy Python library files including shared libraries
-COPY --from=build-env /usr/local/lib/python${PYTHON_VERSION} /usr/local/lib/python${PYTHON_VERSION}
-COPY --from=build-env /usr/local/lib/libpython${PYTHON_VERSION}.so* /usr/local/lib/
+COPY --from=build-env /usr/local/lib/python3.12 /usr/local/lib/python3.12
+COPY --from=build-env /usr/local/lib/libpython3.12.so* /usr/local/lib/
 # Copy system libraries for x86_64
 COPY --from=build-env /lib/x86_64-linux-gnu/lib* /lib/x86_64-linux-gnu/
 
