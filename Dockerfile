@@ -30,6 +30,8 @@ COPY --from=build-env /usr/local/lib/python3.12/site-packages /usr/local/lib/pyt
 ENV LD_LIBRARY_PATH=/usr/local/lib:/lib/x86_64-linux-gnu:${LD_LIBRARY_PATH:-}
 ARG PYTHON_VERSION=3.12
 ENV PYTHONPATH=/usr/local/lib/python${PYTHON_VERSION}/site-packages
+ENV PATH="/usr/local/bin:${PATH}"
+
 COPY --from=build-env /usr/local/bin/python${PYTHON_VERSION} /usr/local/bin/pythonapp
 # Copy Python library files including shared libraries
 COPY --from=build-env /usr/local/lib/python${PYTHON_VERSION} /usr/local/lib/python${PYTHON_VERSION}
