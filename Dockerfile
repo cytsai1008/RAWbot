@@ -41,5 +41,4 @@ ENV PATH="/opt/exiftool:${PATH}"
 ENV EXIFTOOL_PATH="/opt/exiftool/"
 
 WORKDIR /app
-RUN chmod +x main.py
-CMD ["./main.py"]
+CMD ["python3", "main.py"]
