@@ -22,12 +22,11 @@ RUN pip install --upgrade pip wheel \
 
 FROM al3xos/python-distroless:3.12-debian12
 COPY --from=build-env /app /app
-COPY --from=build-env /opt/exiftool /exiftool
+COPY --from=build-env /opt/exiftool /opt/exiftool
 COPY --from=build-env /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
 
 ENV PATH="/opt/exiftool:${PATH}"
-ENV EXIFTOOL_PATH="/exiftool/"
-ENV PYTHONPATH="/usr/local/lib/python3.12/site-packages:${PYTHONPATH}"
+ENV EXIFTOOL_PATH="/opt/exiftool/"
 
 WORKDIR /app
 CMD ["main.py"]
