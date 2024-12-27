@@ -73,33 +73,34 @@ async def on_message(message):
                 )
         ):
             try:
-                # Download the raw image
-                raw_data = await attachment.read()
+                async with message.channel.typing():
+                    # Download the raw image
+                    raw_data = await attachment.read()
 
-                # Check the file type using exiftool
-                if str(await run_exiftool(raw_data)).strip().lower() in ["jpeg", "jpg"]:
-                    # rename the file to jpg
-                    converted_file = discord.File(io.BytesIO(raw_data), f"{attachment.filename.split('.')[0]}.jpg")
-                    await message.reply(
-                        content="",
-                        file=converted_file,
-                    )
-                    return
+                    # Check the file type using exiftool
+                    if str(await run_exiftool(raw_data)).strip().lower() in ["jpeg", "jpg"]:
+                        # rename the file to jpg
+                        converted_file = discord.File(io.BytesIO(raw_data), f"{attachment.filename.split('.')[0]}.jpg")
+                        await message.reply(
+                            content="",
+                            file=converted_file,
+                        )
+                        return
 
-                # Process the raw image using rawpy
-                with rawpy.imread(io.BytesIO(raw_data)) as raw:
-                    rgb_image = raw.postprocess(use_camera_wb=True)
+                    # Process the raw image using rawpy
+                    with rawpy.imread(io.BytesIO(raw_data)) as raw:
+                        rgb_image = raw.postprocess(use_camera_wb=True)
 
-                # Convert the raw image to JPG using Pillow
-                image = Image.fromarray(rgb_image)
-                with io.BytesIO() as output:
-                    image.save(output, format="JPEG")
-                    output.seek(0)
+                    # Convert the raw image to JPG using Pillow
+                    image = Image.fromarray(rgb_image)
+                    with io.BytesIO() as output:
+                        image.save(output, format="JPEG")
+                        output.seek(0)
 
-                    # Create a discord.File object
-                    converted_file = discord.File(
-                        output, filename=f"{attachment.filename.split('.')[0]}.jpg"
-                    )
+                        # Create a discord.File object
+                        converted_file = discord.File(
+                            output, filename=f"{attachment.filename.split('.')[0]}.jpg"
+                        )
 
                     # Send the converted file
                     await message.reply(
