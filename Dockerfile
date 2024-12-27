@@ -7,7 +7,7 @@ COPY . /app
 
 RUN mkdir -p /opt/exiftool \
 && cd /opt/exiftool \
-&& EXIFTOOL_VERSION=`curl -s https://exiftool.org/ver.txt` \
+&& EXIFTOOL_VERSION=$(curl -s https://exiftool.org/ver.txt) \
 && EXIFTOOL_ARCHIVE=Image-ExifTool-${EXIFTOOL_VERSION}.tar.gz \
 && curl -s -O https://exiftool.org/$EXIFTOOL_ARCHIVE \
 && tar xzf $EXIFTOOL_ARCHIVE --strip-components=1 \
@@ -38,6 +38,9 @@ COPY --from=build-env /lib/x86_64-linux-gnu/lib* /lib/x86_64-linux-gnu/
 
 ENV PATH="/opt/exiftool:${PATH}"
 ENV EXIFTOOL_PATH="/opt/exiftool/"
+
+# Verify that ExifTool binary exists
+RUN [ -f /opt/exiftool/exiftool ] && echo "ExifTool binary exists" || echo "ExifTool binary missing"
 
 WORKDIR /app
 CMD ["/usr/local/bin/python3", "main.py"]
