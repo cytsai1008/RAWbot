@@ -26,7 +26,7 @@ COPY --from=build-env /opt/exiftool /opt/exiftool
 COPY --from=build-env /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
 
 ENV PATH="/opt/exiftool:${PATH}"
-ENV EXIFTOOL_PATH="/opt/exiftool/"
+# ENV EXIFTOOL_PATH="/opt/exiftool/"
 
 WORKDIR /app
 CMD ["main.py"]
