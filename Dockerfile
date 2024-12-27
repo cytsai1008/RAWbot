@@ -1,7 +1,8 @@
 FROM python:3.12-slim AS build-env
 
 RUN apt-get update && apt-get install -y \
-    curl
+    curl \
+    libgcc1
 
 COPY . /app
 
@@ -25,6 +26,8 @@ FROM al3xos/python-distroless:3.12-debian12
 COPY --from=build-env /app /app
 COPY --from=build-env /opt/exiftool /opt/exiftool
 COPY --from=build-env /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
+COPY --from=build-env /usr/lib/x86_64-linux-gnu/libgcc_s.so.1 /usr/lib/x86_64-linux-gnu/libgcc_s.so.1
+
 
 ENV PATH="/opt/exiftool:${PATH}"
 ENV EXIFTOOL_PATH="/opt/exiftool/"
