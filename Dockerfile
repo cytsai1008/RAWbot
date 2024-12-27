@@ -41,4 +41,4 @@ ENV PATH="/opt/exiftool:${PATH}"
 ENV EXIFTOOL_PATH="/opt/exiftool/"
 
 WORKDIR /app
-CMD ["python3", "main.py"]
+CMD ["/usr/local/bin/python3", "main.py"]
