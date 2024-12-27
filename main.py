@@ -79,7 +79,7 @@ async def on_message(message):
                 # Check the file type using exiftool
                 if str(await run_exiftool(raw_data)).strip().lower() in ["jpeg", "jpg"]:
                     # rename the file to jpg
-                    converted_file = discord.File(io.BytesIO(raw_data), "{attachment.filename.split('.')[0]}.jpg")
+                    converted_file = discord.File(io.BytesIO(raw_data), f"{attachment.filename.split('.')[0]}.jpg")
                     await message.reply(
                         content="",
                         file=converted_file,
