@@ -12,6 +12,7 @@ RUN mkdir -p /opt/exiftool \
 && curl -s -O https://exiftool.org/$EXIFTOOL_ARCHIVE \
 && tar xzf $EXIFTOOL_ARCHIVE --strip-components=1 \
 && rm -f $EXIFTOOL_ARCHIVE \
+&& chmod +x exiftool \
 && /opt/exiftool/exiftool -ver
 
 WORKDIR /app
@@ -26,7 +27,7 @@ COPY --from=build-env /opt/exiftool /opt/exiftool
 COPY --from=build-env /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
 
 ENV PATH="/opt/exiftool:${PATH}"
-# ENV EXIFTOOL_PATH="/opt/exiftool/"
+ENV EXIFTOOL_PATH="/opt/exiftool/"
 
 WORKDIR /app
 CMD ["main.py"]
